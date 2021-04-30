@@ -20,6 +20,7 @@ class ListarCursos implements iController
     public function processaRequisicao() : void
     {
         $cursos = $this->repositorioCursos->findAll();
+        $titulo = 'Lista de Cursos';
         require __DIR__ . '/../../view/cursos/listar-cursos.php';
     }
 }
