@@ -2,9 +2,9 @@
 
 namespace Alura\Cursos\Controller;
 
-class FormInsereCurso
+class FormInsereCurso implements iController
 {
-    public function processaRequisicao()
+    public function processaRequisicao() : void
     {
         ?>
             <!DOCTYPE html>
