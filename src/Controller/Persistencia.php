@@ -30,8 +30,23 @@ class Persistencia implements iController
         //instanciando
         $curso = new Curso;
         $curso->setDescricao($descricao);
-        //persistindo
-        $this->entityManager->persist($curso);
+        
+        //Capturando id da requisição
+        $id = filter_input(
+            INPUT_GET,
+            'id',
+            FILTER_VALIDATE_INT
+        );
+        
+        //Atualização ou inserção ?
+        if(!is_null($id) && $id !== false ){//UPDATE
+            $curso->setId($id);
+            $this->entityManager->merge($curso);
+        } else {//INSERT
+            $this->entityManager->persist($curso);
+        }
+
+        //Persistindo
         $this->entityManager->flush();
 
         header('Location: /listar-cursos', true, 302);

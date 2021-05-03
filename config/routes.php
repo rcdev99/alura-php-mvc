@@ -1,6 +1,7 @@
 <?php
 
 use Alura\Cursos\Controller\Exclusao;
+use Alura\Cursos\Controller\FormAlteraCurso;
 use Alura\Cursos\Controller\FormInsereCurso;
 use Alura\Cursos\Controller\ListarCursos;
 use Alura\Cursos\Controller\Persistencia;
@@ -10,4 +11,5 @@ return $rotas = [
     '/novo-curso' => FormInsereCurso::class,
     '/salvar-curso' => Persistencia::class,
     '/excluir-curso' => Exclusao::class,
+    '/alterar-curso' => FormAlteraCurso::class,
 ];
