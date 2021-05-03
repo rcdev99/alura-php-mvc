@@ -2,33 +2,21 @@
 
 require __DIR__ . '/../vendor/autoload.php';
 
-use Alura\Cursos\Controller\FormInsereCurso;
-use Alura\Cursos\Controller\ListarCursos;
-use Alura\Cursos\Controller\Persistencia;
+use Alura\Cursos\Controller\iController;
 
-$erro = "Erro 404 - Not Found";
+$rotas = require __DIR__ . '/../config/routes.php';
+$caminho_url = strtolower($_SERVER['PATH_INFO']); 
 
-if (isset($_SERVER['PATH_INFO'])) {
-
-    $path_url = strtolower($_SERVER['PATH_INFO']);
-
-    switch ($path_url) {
-        case '/listar-cursos':
-            $controlador = new ListarCursos();
-            $controlador->processaRequisicao();
-            break;
-        case '/novo-curso':
-            $controlador = new FormInsereCurso();
-            $controlador->processaRequisicao();    
-            break;
-        case '/salvar-curso':
-            $controlador = new Persistencia();
-            $controlador->processaRequisicao();    
-            break;    
-        default:
-            echo $erro;
-            break;
-    }
-}else{
-    echo $erro;
+if (!array_key_exists($caminho_url, $rotas)) {
+    http_response_code(404);
+    exit();
 }
+
+//Obtendo class a ser instanciada através da rota mapeada
+$classControladora = $rotas[$caminho_url];
+/**
+ * @var iController $controlador
+ */
+//Instanciando classe de acordo com mapeamento
+$controlador = new $classControladora;
+$controlador->processaRequisicao();
