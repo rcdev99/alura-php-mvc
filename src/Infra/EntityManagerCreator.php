@@ -8,6 +8,9 @@ use Doctrine\ORM\Tools\Setup;
 
 class EntityManagerCreator
 {
+    /**
+     * @return EntityManagerInterface
+     */
     public function getEntityManager(): EntityManagerInterface
     {
         $paths = [__DIR__ . '/../Entity'];

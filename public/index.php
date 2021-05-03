@@ -4,6 +4,7 @@ require __DIR__ . '/../vendor/autoload.php';
 
 use Alura\Cursos\Controller\FormInsereCurso;
 use Alura\Cursos\Controller\ListarCursos;
+use Alura\Cursos\Controller\Persistencia;
 
 $erro = "Erro 404 - Not Found";
 
@@ -20,6 +21,10 @@ if (isset($_SERVER['PATH_INFO'])) {
             $controlador = new FormInsereCurso();
             $controlador->processaRequisicao();    
             break;
+        case '/salvar-curso':
+            $controlador = new Persistencia();
+            $controlador->processaRequisicao();    
+            break;    
         default:
             echo $erro;
             break;
