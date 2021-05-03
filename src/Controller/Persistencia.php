@@ -22,15 +22,19 @@ class Persistencia implements iController
     
     public function processaRequisicao() : void
     {
-        $descricao = $_POST['descricao'];
+        //utilização de filtros para obtenção de dados do input
+        $descricao = filter_input(
+            INPUT_POST,
+            'descricao',
+            FILTER_SANITIZE_STRING);
+        //instanciando
         $curso = new Curso;
         $curso->setDescricao($descricao);
-        
-        var_dump($curso);
-
+        //persistindo
         $this->entityManager->persist($curso);
         $this->entityManager->flush();
 
+        header('Location: /listar-cursos', true, 302);
     }
 
 }
