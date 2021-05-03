@@ -8,6 +8,9 @@ use Doctrine\ORM\Tools\Setup;
 
 class EntityManagerCreator
 {
+    /**
+     * @return EntityManagerInterface
+     */
     public function getEntityManager(): EntityManagerInterface
     {
         $paths = [__DIR__ . '/../Entity'];
@@ -15,7 +18,7 @@ class EntityManagerCreator
 
         $dbParams = array(
             'driver' => 'pdo_sqlite',
-            'path' => __DIR__ . '/../../db.sqlite'
+            'path' => __DIR__ . '/../../var/data/db.sqlite'
         );
 
         $config = Setup::createAnnotationMetadataConfiguration(
