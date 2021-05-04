@@ -4,9 +4,8 @@ namespace Alura\Cursos\Controller;
 
 use Alura\Cursos\Entity\Curso;
 use Alura\Cursos\Infra\EntityManagerCreator;
-use Doctrine\ORM\EntityManagerInterface;
 
-class FormAlteraCurso implements iController
+class FormAlteraCurso extends HtmlController implements iController
 {
      
     private $repositorioCurso;
@@ -30,9 +29,10 @@ class FormAlteraCurso implements iController
             return;
         }
 
-        $curso = $this->repositorioCurso->find($id);
-        $titulo = 'Alterar Curso';
-        require __DIR__ . '/../../view/cursos/formulario-insere-cursos.php';
+        echo $this->renderizaHtml('cursos/formulario-insere-cursos.php', [
+            'curso' => $curso = $this->repositorioCurso->find($id),
+            'titulo' => 'Alterar Curso'
+        ]);
 
     }
 

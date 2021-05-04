@@ -2,11 +2,13 @@
 
 namespace Alura\Cursos\Controller;
 
-class FormInsereCurso implements IController
+class FormInsereCurso extends HtmlController implements IController
 {
     public function processaRequisicao() : void
     {
-        $titulo = 'Novo Curso';
-        require __DIR__ . '/../../view/cursos/formulario-insere-cursos.php';
+        echo $this->renderizaHtml('cursos/formulario-insere-cursos.php', [
+            'titulo' => $titulo = 'Novo Curso',
+        ]);
+        
     }
 }
