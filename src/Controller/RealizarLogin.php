@@ -6,6 +6,9 @@ use Alura\Cursos\Entity\Usuario;
 use Alura\Cursos\Helper\FlashMessageTrait;
 use Alura\Cursos\Infra\EntityManagerCreator;
 use Doctrine\Persistence\ObjectRepository;
+use Nyholm\Psr7\Response;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 class RealizarLogin implements iController
 {
@@ -21,24 +24,20 @@ class RealizarLogin implements iController
         $this->usuariosRepository = $entityManager->getRepository(Usuario::class);
     }
 
-    public function processaRequisicao(): void
+    public function processaRequisicao(ServerRequestInterface $request) : ResponseInterface
     {
-        $email = filter_input(
-            INPUT_POST,
-            'email',
+        //Obtendo dados da requisição
+        $email = filter_var($request->getParsedBody()['email'],
             FILTER_VALIDATE_EMAIL
         );
 
-        $senha = filter_input(
-            INPUT_POST,
-            'senha',
+        $senha = filter_var($request->getParsedBody()['senha'],
             FILTER_SANITIZE_STRING
         );
 
         if (is_null($email) || $email === false) {
             $this->defineMensagem('danger','E-mail inválido');
-            header('Location: /login', true, 302);
-            return;
+            return new Response(302, ['Location' => '/login']);
         }
 
         /**
@@ -48,13 +47,12 @@ class RealizarLogin implements iController
 
         if (is_null($usuario) || !$usuario->senhaEstaCorreta($senha)) {
             $this->defineMensagem('danger','E-mail ou senha inválidos');
-            header('Location: /login', true, 302);
-            return;
+            return new Response(302, ['Location' => '/login']);
         }
 
         $_SESSION['logado'] = true;
         
-        header('Location: /listar-cursos', true, 302);
+        return new Response(302, ['Location' => '/listar-cursos']);
     }
 
 }

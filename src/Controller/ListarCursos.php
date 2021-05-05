@@ -5,6 +5,9 @@ namespace Alura\Cursos\Controller;
 use Alura\Cursos\Entity\Curso;
 use Alura\Cursos\Helper\RenderizadorDeHtmlTrait;
 use Alura\Cursos\Infra\EntityManagerCreator;
+use Nyholm\Psr7\Response;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 class ListarCursos implements iController
 {
@@ -20,12 +23,14 @@ class ListarCursos implements iController
             ->getRepository(Curso::class);
     }
 
-    public function processaRequisicao() : void
+    public function processaRequisicao(ServerRequestInterface $request) : ResponseInterface
     {
-        echo $this->renderizaHtml('cursos/listar-cursos.php', [
+        $html = $this->renderizaHtml('cursos/listar-cursos.php', [
             'cursos' => $cursos = $this->repositorioCursos->findAll(),
             'titulo' => $titulo = 'Lista de Cursos',
         ]);
+
+        return new Response(200, [], $html);
     }
 }
 

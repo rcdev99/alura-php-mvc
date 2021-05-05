@@ -6,6 +6,9 @@ use Alura\Cursos\Entity\Curso;
 use Alura\Cursos\Helper\FlashMessageTrait;
 use Alura\Cursos\Infra\EntityManagerCreator;
 use Doctrine\ORM\EntityManagerInterface;
+use Nyholm\Psr7\Response;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 class Persistencia implements iController
 {
@@ -22,23 +25,22 @@ class Persistencia implements iController
         $this->entityManager = $entityManagerCreator->getEntityManager();
     }
     
-    public function processaRequisicao() : void
+    public function processaRequisicao(ServerRequestInterface $request) : ResponseInterface
     {
-        //utilização de filtros para obtenção de dados do input
-        $descricao = filter_input(
-            INPUT_POST,
-            'descricao',
-            FILTER_SANITIZE_STRING);
-        //instanciando
-        $curso = new Curso;
-        $curso->setDescricao($descricao);
-        
-        //Capturando id da requisição
-        $id = filter_input(
-            INPUT_GET,
-            'id',
+        //Obtendo dados da requisição
+        $descricao = filter_var(
+            $request->getParsedBody()['descricao'], 
+            FILTER_SANITIZE_STRING
+        );
+
+        $id = filter_var(
+            $request->getParsedBody()['id'],
             FILTER_VALIDATE_INT
         );
+
+        //instanciando Curso
+        $curso = new Curso;
+        $curso->setDescricao($descricao);
         
         //Atualização ou inserção ?
         if(!is_null($id) && $id !== false ){//UPDATE
@@ -49,12 +51,11 @@ class Persistencia implements iController
             $this->entityManager->persist($curso);
             $this->defineMensagem('success','Curso criado com sucesso');
         }
-        $_SESSION['tipo_mensagem'] = 'success';
         
         //Persistindo
         $this->entityManager->flush();
 
-        header('Location: /listar-cursos', true, 302);
+        return new Response(302, ['Location' => '/listar-cursos']);
     }
 
 }

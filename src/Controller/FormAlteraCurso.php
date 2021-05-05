@@ -3,12 +3,17 @@
 namespace Alura\Cursos\Controller;
 
 use Alura\Cursos\Entity\Curso;
+use Alura\Cursos\Helper\FlashMessageTrait;
 use Alura\Cursos\Helper\RenderizadorDeHtmlTrait;
 use Alura\Cursos\Infra\EntityManagerCreator;
+use Nyholm\Psr7\Response;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 class FormAlteraCurso implements iController
 {
-    use RenderizadorDeHtmlTrait;
+    use RenderizadorDeHtmlTrait, 
+        FlashMessageTrait;
 
     private $repositorioCurso;
 
@@ -18,24 +23,25 @@ class FormAlteraCurso implements iController
         $this->repositorioCurso = $entityManager->getRepository(Curso::class);
     }
 
-    public function processaRequisicao(): void
+    public function processaRequisicao(ServerRequestInterface $request) : ResponseInterface
     {
-        $id = filter_input(
-            INPUT_GET,
-            'id',
+        $id = filter_var(
+            $request->getQueryParams()['id'],
             FILTER_VALIDATE_INT
         );
 
         if(is_null($id) || $id === false){
-            header('Location: /listar-cursos', true, 302);
-            return;
+            
+            $this->defineMensagem('danger', 'Curso inexistente');
+            return new Response(302, ['Location' => '/listar-cursos']);
         }
 
-        echo $this->renderizaHtml('cursos/formulario-insere-cursos.php', [
+        $html = $this->renderizaHtml('cursos/formulario-insere-cursos.php', [
             'curso' => $curso = $this->repositorioCurso->find($id),
             'titulo' => 'Alterar Curso'
         ]);
-
+        
+        return new Response(200, [], $html);
     }
 
 }
