@@ -31,6 +31,8 @@ class Exclusao implements iController
         
         //Redirecionando caso o id seja nulo ou falso
         if (is_null($id) || $id === false) {
+            $_SESSION['tipo_mensagem'] = 'danger';
+            $_SESSION['mensagem'] = 'Curso não encontrado';
             header('Location: /listar-cursos', true, 302);
             return;
         }
@@ -40,6 +42,9 @@ class Exclusao implements iController
         $this->entityManager->remove($curso);
         $this->entityManager->flush();
         
+        $_SESSION['tipo_mensagem'] = 'success';
+        $_SESSION['mensagem'] = 'Curso removido';
+
         header('Location: /listar-cursos', true, 302);
     }
 

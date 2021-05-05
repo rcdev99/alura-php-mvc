@@ -42,10 +42,13 @@ class Persistencia implements iController
         if(!is_null($id) && $id !== false ){//UPDATE
             $curso->setId($id);
             $this->entityManager->merge($curso);
+            $_SESSION['mensagem'] = 'Curso atualizado com sucesso';
         } else {//INSERT
             $this->entityManager->persist($curso);
+            $_SESSION['mensagem'] = 'Curso criado com sucesso';
         }
-
+        $_SESSION['tipo_mensagem'] = 'success';
+        
         //Persistindo
         $this->entityManager->flush();
 
