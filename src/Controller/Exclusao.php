@@ -3,9 +3,12 @@
 namespace Alura\Cursos\Controller;
 
 use Alura\Cursos\Entity\Curso;
+use Nyholm\Psr7\Response;
 use Alura\Cursos\Helper\FlashMessageTrait;
 use Alura\Cursos\Infra\EntityManagerCreator;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 class Exclusao implements iController
 {
@@ -22,20 +25,20 @@ class Exclusao implements iController
         $this->entityManager = $entityManagerCreator->getEntityManager();
     }
 
-    public function processaRequisicao(): void
+    public function processaRequisicao(ServerRequestInterface $request) : ResponseInterface
     {
+        $response = new Response(302, ['Location' => '/listar-cursos']);
+
         //Obtendo o ID da requisição
-        $id = filter_input(
-                INPUT_GET, 
-                'id',
+        $id = filter_var(
+                $request->getQueryParams()['id'],
                 FILTER_VALIDATE_INT
-            );
+        );
         
         //Redirecionando caso o id seja nulo ou falso
         if (is_null($id) || $id === false) {
             $this->defineMensagem('danger','Curso não encontrado');
-            header('Location: /listar-cursos', true, 302);
-            return;
+            return $response;
         }
         
         $curso = $this->entityManager->getReference(Curso::class, $id);
@@ -44,7 +47,7 @@ class Exclusao implements iController
         $this->entityManager->flush();
         $this->defineMensagem('success','Curso removido');
         
-        header('Location: /listar-cursos', true, 302);
+        return $response;
     }
 
 }

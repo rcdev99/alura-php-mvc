@@ -3,6 +3,8 @@
 require __DIR__ . '/../vendor/autoload.php';
 
 use Alura\Cursos\Controller\iController;
+use Nyholm\Psr7\Factory\Psr17Factory;
+use Nyholm\Psr7Server\ServerRequestCreator;
 
 $rotas = require __DIR__ . '/../config/routes.php';
 $caminho_url = strtolower($_SERVER['PATH_INFO']); 
@@ -22,6 +24,18 @@ if (!isset($_SESSION['logado']) && $rotaDeLogin === false ){
     exit();
 }
 
+//Utilização de factor para obtenção dos dados do servidor
+$psr17Factory = new Psr17Factory;
+
+$creator = new ServerRequestCreator(
+    $psr17Factory, // ServerRequestFactory
+    $psr17Factory, // UriFactory
+    $psr17Factory, // UploadedFileFactory
+    $psr17Factory  // StreamFactory
+);
+//Obtendo dados da requisição
+$request = $creator->fromGlobals();
+
 //Obtendo class a ser instanciada através da rota mapeada
 $classControladora = $rotas[$caminho_url];
 /**
@@ -29,4 +43,12 @@ $classControladora = $rotas[$caminho_url];
  */
 //Instanciando classe de acordo com mapeamento
 $controlador = new $classControladora;
-$controlador->processaRequisicao();
+$response = $controlador->processaRequisicao($request);
+//Enviando os headers
+foreach ($response->getHeaders() as $name => $values) {
+    foreach ($values as $value) {
+        header(sprintf('%s: %s', $name, $value), false);
+    }
+}
+//Exibindo corpo da resposta
+echo $response->getBody();
