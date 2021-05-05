@@ -1,4 +1,4 @@
-<?php include __DIR__ . '/../header.html'; ?>
+<?php include __DIR__ . '/../header.php'; ?>
 
     <form action="/realiza-login" method="POST">
         <div class="form-group">
@@ -14,4 +14,4 @@
         </button>
     </form>
 
-<?php include __DIR__ . '/../footer.html'; ?>
+<?php include __DIR__ . '/../footer.php'; ?>

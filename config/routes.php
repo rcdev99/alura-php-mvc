@@ -1,5 +1,6 @@
 <?php
 
+use Alura\Cursos\Controller\Deslogar;
 use Alura\Cursos\Controller\Exclusao;
 use Alura\Cursos\Controller\FormAlteraCurso;
 use Alura\Cursos\Controller\FormInsereCurso;
@@ -16,4 +17,5 @@ return $rotas = [
     '/alterar-curso' => FormAlteraCurso::class,
     '/login' => FormLogin::class,
     '/realiza-login' => RealizarLogin::class,
+    '/logout' => Deslogar::class,
 ];
