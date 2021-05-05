@@ -48,6 +48,8 @@ class RealizarLogin implements iController
             return;
         }
 
+        $_SESSION['logado'] = true;
+        
         header('Location: /listar-cursos', true, 302);
     }
 
