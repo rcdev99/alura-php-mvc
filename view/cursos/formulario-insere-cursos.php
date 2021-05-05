@@ -1,4 +1,4 @@
-<?php include __DIR__ . '/../header.html'; ?>
+<?php include __DIR__ . '/../header.php'; ?>
 
     <form action="/salvar-curso<?= isset($curso) ? '?id=' . $curso->getId() : '' ?>" method="POST">
         <div class="form-group">
@@ -13,4 +13,4 @@
         <button class="btn btn-primary">Salvar</button>
     </form>
 
-<?php include __DIR__ . '/../footer.html'; ?>
+<?php include __DIR__ . '/../footer.php'; ?>

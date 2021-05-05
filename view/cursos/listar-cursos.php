@@ -1,4 +1,4 @@
-<?php include __DIR__ . '/../header.html'; ?>
+<?php include __DIR__ . '/../header.php'; ?>
 
 
     <a href="/novo-curso" class="btn btn-primary mb-2">
@@ -22,4 +22,4 @@
         <?php endforeach; ?>
     </ul>
 
-<?php include __DIR__ . '/../footer.html'; ?>
+<?php include __DIR__ . '/../footer.php'; ?>

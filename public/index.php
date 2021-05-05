@@ -12,6 +12,16 @@ if (!array_key_exists($caminho_url, $rotas)) {
     exit();
 }
 
+//iniciando sessão
+session_start();
+
+$rotaDeLogin = stripos($caminho_url, 'login');
+
+if (!isset($_SESSION['logado']) && $rotaDeLogin === false ){
+    header('Location: /login', true, 302);
+    exit();
+}
+
 //Obtendo class a ser instanciada através da rota mapeada
 $classControladora = $rotas[$caminho_url];
 /**

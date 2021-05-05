@@ -3,12 +3,14 @@
 namespace Alura\Cursos\Controller;
 
 use Alura\Cursos\Entity\Curso;
+use Alura\Cursos\Helper\FlashMessageTrait;
 use Alura\Cursos\Infra\EntityManagerCreator;
 use Doctrine\ORM\EntityManagerInterface;
 
 class Exclusao implements iController
 {
 
+    use FlashMessageTrait;
     /**
      * @var EntityManagerInterface
      */
@@ -31,6 +33,7 @@ class Exclusao implements iController
         
         //Redirecionando caso o id seja nulo ou falso
         if (is_null($id) || $id === false) {
+            $this->defineMensagem('danger','Curso não encontrado');
             header('Location: /listar-cursos', true, 302);
             return;
         }
@@ -39,6 +42,7 @@ class Exclusao implements iController
 
         $this->entityManager->remove($curso);
         $this->entityManager->flush();
+        $this->defineMensagem('success','Curso removido');
         
         header('Location: /listar-cursos', true, 302);
     }
