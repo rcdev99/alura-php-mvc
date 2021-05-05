@@ -2,8 +2,12 @@
 
 namespace Alura\Cursos\Controller;
 
-class FormLogin extends HtmlController implements iController
+use Alura\Cursos\Helper\RenderizadorDeHtmlTrait;
+
+class FormLogin implements iController
 {
+    use RenderizadorDeHtmlTrait;
+    
     public function processaRequisicao(): void
     {
         echo $this->renderizaHtml('login/formLogin.php', [

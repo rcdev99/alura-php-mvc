@@ -2,8 +2,12 @@
 
 namespace Alura\Cursos\Controller;
 
-class FormInsereCurso extends HtmlController implements IController
+use Alura\Cursos\Helper\RenderizadorDeHtmlTrait;
+
+class FormInsereCurso  implements IController
 {
+    use RenderizadorDeHtmlTrait;
+    
     public function processaRequisicao() : void
     {
         echo $this->renderizaHtml('cursos/formulario-insere-cursos.php', [

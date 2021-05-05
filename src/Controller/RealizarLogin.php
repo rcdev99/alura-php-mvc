@@ -3,11 +3,13 @@
 namespace Alura\Cursos\Controller;
 
 use Alura\Cursos\Entity\Usuario;
+use Alura\Cursos\Helper\FlashMessageTrait;
 use Alura\Cursos\Infra\EntityManagerCreator;
 use Doctrine\Persistence\ObjectRepository;
 
 class RealizarLogin implements iController
 {
+    use FlashMessageTrait;
     /**
      * @var ObjectRepository
      */
@@ -34,8 +36,7 @@ class RealizarLogin implements iController
         );
 
         if (is_null($email) || $email === false) {
-            $_SESSION['tipo_mensagem'] = 'danger';
-            $_SESSION['mensagem'] = 'E-mail inválido';
+            $this->defineMensagem('danger','E-mail inválido');
             header('Location: /login', true, 302);
             return;
         }
@@ -46,8 +47,7 @@ class RealizarLogin implements iController
         $usuario = $this->usuariosRepository->findOneBy(['email' => $email]);
 
         if (is_null($usuario) || !$usuario->senhaEstaCorreta($senha)) {
-            $_SESSION['tipo_mensagem'] = 'danger';
-            $_SESSION['mensagem'] = 'E-mail ou senha inválido';
+            $this->defineMensagem('danger','E-mail ou senha inválidos');
             header('Location: /login', true, 302);
             return;
         }
