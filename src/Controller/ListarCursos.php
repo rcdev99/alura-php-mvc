@@ -8,8 +8,9 @@ use Alura\Cursos\Infra\EntityManagerCreator;
 use Nyholm\Psr7\Response;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
-class ListarCursos implements iController
+class ListarCursos implements RequestHandlerInterface
 {
     use RenderizadorDeHtmlTrait;
     
@@ -23,7 +24,7 @@ class ListarCursos implements iController
             ->getRepository(Curso::class);
     }
 
-    public function processaRequisicao(ServerRequestInterface $request) : ResponseInterface
+    public function handle(ServerRequestInterface $request) : ResponseInterface
     {
         $html = $this->renderizaHtml('cursos/listar-cursos.php', [
             'cursos' => $cursos = $this->repositorioCursos->findAll(),

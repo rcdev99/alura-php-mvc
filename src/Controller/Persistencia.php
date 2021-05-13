@@ -9,8 +9,9 @@ use Doctrine\ORM\EntityManagerInterface;
 use Nyholm\Psr7\Response;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
-class Persistencia implements iController
+class Persistencia implements RequestHandlerInterface
 {
 
     use FlashMessageTrait;
@@ -25,7 +26,7 @@ class Persistencia implements iController
         $this->entityManager = $entityManagerCreator->getEntityManager();
     }
     
-    public function processaRequisicao(ServerRequestInterface $request) : ResponseInterface
+    public function handle(ServerRequestInterface $request) : ResponseInterface
     {
         //Obtendo dados da requisição
         $descricao = filter_var(

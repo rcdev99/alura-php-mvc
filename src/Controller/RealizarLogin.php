@@ -9,8 +9,9 @@ use Doctrine\Persistence\ObjectRepository;
 use Nyholm\Psr7\Response;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
-class RealizarLogin implements iController
+class RealizarLogin implements RequestHandlerInterface
 {
     use FlashMessageTrait;
     /**
@@ -24,7 +25,7 @@ class RealizarLogin implements iController
         $this->usuariosRepository = $entityManager->getRepository(Usuario::class);
     }
 
-    public function processaRequisicao(ServerRequestInterface $request) : ResponseInterface
+    public function handle(ServerRequestInterface $request) : ResponseInterface
     {
         //Obtendo dados da requisição
         $email = filter_var($request->getParsedBody()['email'],

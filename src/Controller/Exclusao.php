@@ -9,8 +9,9 @@ use Alura\Cursos\Infra\EntityManagerCreator;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
-class Exclusao implements iController
+class Exclusao implements RequestHandlerInterface
 {
 
     use FlashMessageTrait;
@@ -25,7 +26,7 @@ class Exclusao implements iController
         $this->entityManager = $entityManagerCreator->getEntityManager();
     }
 
-    public function processaRequisicao(ServerRequestInterface $request) : ResponseInterface
+    public function handle(ServerRequestInterface $request) : ResponseInterface
     {
         $response = new Response(302, ['Location' => '/listar-cursos']);
 
