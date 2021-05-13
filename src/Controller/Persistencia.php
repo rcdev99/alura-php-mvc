@@ -34,7 +34,7 @@ class Persistencia implements iController
         );
 
         $id = filter_var(
-            $request->getParsedBody()['id'],
+            $request->getQueryParams()['id'],
             FILTER_VALIDATE_INT
         );
 
