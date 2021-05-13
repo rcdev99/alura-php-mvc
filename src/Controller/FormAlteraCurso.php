@@ -9,8 +9,9 @@ use Alura\Cursos\Infra\EntityManagerCreator;
 use Nyholm\Psr7\Response;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
-class FormAlteraCurso implements iController
+class FormAlteraCurso implements RequestHandlerInterface
 {
     use RenderizadorDeHtmlTrait, 
         FlashMessageTrait;
@@ -23,7 +24,7 @@ class FormAlteraCurso implements iController
         $this->repositorioCurso = $entityManager->getRepository(Curso::class);
     }
 
-    public function processaRequisicao(ServerRequestInterface $request) : ResponseInterface
+    public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $id = filter_var(
             $request->getQueryParams()['id'],
@@ -43,6 +44,5 @@ class FormAlteraCurso implements iController
         
         return new Response(200, [], $html);
     }
-
 }
 

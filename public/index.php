@@ -5,6 +5,7 @@ require __DIR__ . '/../vendor/autoload.php';
 use Alura\Cursos\Controller\iController;
 use Nyholm\Psr7\Factory\Psr17Factory;
 use Nyholm\Psr7Server\ServerRequestCreator;
+use Psr\Http\Server\RequestHandlerInterface;
 
 $rotas = require __DIR__ . '/../config/routes.php';
 $caminho_url = strtolower($_SERVER['PATH_INFO']); 
@@ -39,11 +40,11 @@ $request = $creator->fromGlobals();
 //Obtendo class a ser instanciada através da rota mapeada
 $classControladora = $rotas[$caminho_url];
 /**
- * @var iController $controlador
+ * @var RequestHandlerInterface $controlador
  */
 //Instanciando classe de acordo com mapeamento
 $controlador = new $classControladora;
-$response = $controlador->processaRequisicao($request);
+$response = $controlador->handle($request);
 //Enviando os headers
 foreach ($response->getHeaders() as $name => $values) {
     foreach ($values as $value) {
