@@ -1,5 +1,6 @@
 <?php
 
+use Alura\Cursos\Controller\CursosEmJson;
 use Alura\Cursos\Controller\Deslogar;
 use Alura\Cursos\Controller\Exclusao;
 use Alura\Cursos\Controller\FormAlteraCurso;
@@ -18,4 +19,5 @@ return $rotas = [
     '/login' => FormLogin::class,
     '/realiza-login' => RealizarLogin::class,
     '/logout' => Deslogar::class,
+    '/cursos-json' => CursosEmJson::class,
 ];
